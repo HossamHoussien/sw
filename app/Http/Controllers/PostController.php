@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Tag;
 use App\Traits\Search;
 use App\Traits\PostCRUD;
 use Illuminate\Http\Request;
-
+use DB;
 class PostController extends Controller
 {
     use Search;
@@ -34,7 +35,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -45,7 +46,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = new Post();
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->location = $request->location;
+        $post->save();
+        
+        $request->cars ? DB::table('posts_tags')->insert(['post_id'=>$post->id,'tag_id'=>1]) : '';
+        $request->personal ? DB::table('posts_tags')->insert(['post_id'=>$post->id,'tag_id'=>2]) : '';
+        $request->papers ? DB::table('posts_tags')->insert(['post_id'=>$post->id,'tag_id'=>3]) : '';
+        $request->money ? DB::table('posts_tags')->insert(['post_id'=>$post->id,'tag_id'=>4]) : '';
+        $request->misc ? DB::table('posts_tags')->insert(['post_id'=>$post->id,'tag_id'=>5]) : '';
+
+      return redirect('/posts');
     }
 
     /**

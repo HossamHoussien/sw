@@ -8,7 +8,7 @@ use App\Post;
 trait PostCRUD {
 
     public static function getAllPosts(){
-        return Post::all();
+        return Post::all()->sortByDesc('id');
     }
 
     public static function getPost($id){
